@@ -13,8 +13,8 @@ body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);}
 .tr1{display:flex;align-items:center;gap:8px;padding:0 14px;height:50px;}
 .tr2{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px;padding:5px 14px;background:rgba(255,255,255,0.03);border-top:1px solid rgba(255,255,255,0.05);}
 .logo-area{display:flex;align-items:center;flex-shrink:0;margin-right:auto;}
-.nav-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.07);padding:3px;border-radius:50px;}
-.nb{padding:5px 10px;border-radius:50px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:transparent;transition:all .2s;white-space:nowrap;}
+.nav-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.07);padding:3px;border-radius:50px;;overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;white-space:nowrap;scrollbar-width:none}
+.nb{flex:0 0 auto;padding:5px 10px;border-radius:50px;border:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--muted);background:transparent;transition:all .2s;white-space:nowrap;}
 .nb.active{background:var(--gold);color:var(--navy);}
 .type-toggle{display:flex;gap:2px;background:rgba(255,255,255,0.07);padding:3px;border-radius:50px;}
 .tp{padding:5px 13px;border-radius:50px;border:none;background:transparent;color:var(--muted);font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;}
@@ -288,7 +288,7 @@ body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);}
     <span style="font-size:10px;color:var(--muted);letter-spacing:1px">TIPO</span>
     <div class="type-toggle">
       <select id="cur-sel" onchange="setCur(this.value)" style="background:transparent;border:none;color:var(--gold);font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;outline:none;cursor:pointer;padding:4px 6px"><option value="brl">R$ Real</option><option value="usd">US$ Dolar</option></select>
-      <span id="sync-dot" style="font-size:9px;color:#3ECF8E;margin:0 4px"></span>
+      <span id="sync-dot" style="font-size:9px;color:#3ECF8E;margin:0 4px"></span><span style="font-size:8px;color:#5A6575">v3.1</span>
       <button id="logout-btn" onclick="doLogout()" style="display:none;background:transparent;border:1px solid rgba(242,96,92,0.4);color:#F2605C;padding:4px 11px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;cursor:pointer">Sair</button>
     </div>
     <div class="type-toggle" id="prof-toggle">
@@ -325,7 +325,6 @@ body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);}
     <div class="fsec"><div class="fsh"><span class="fsht">Identificacao</span></div>
       <div class="ffields">
         <div class="field"><label>Nome Completo</label><input id="f-nome" type="text"></div>
-        <div class="field"><label>CPF</label><input id="f-cpf" type="text" placeholder="000.000.000-00"></div>
         <div class="field"><label>Perfil Investidor</label><select id="f-perfil"><option>Conservador</option><option>Moderado</option><option>Arrojado</option></select></div>
         <div class="field"><label>Nr Dependentes</label><input id="f-dep" type="number" placeholder="0" min="0"></div>
       </div></div>
@@ -347,7 +346,8 @@ body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--text);}
         <div class="field"><label>Seguros</label><input id="f-seguros" type="number" placeholder="0,00"></div>
         <div class="field"><label>Outros / Imprevistos</label><input id="f-outros" type="number" placeholder="0,00"></div>
       </div></div>
-    <div class="fsec"><div class="fsh"><span class="fsht">Patrimonio e Investimentos</span></div>
+    <div class="fsec"><div class="fsh"><span class="fsht">Patrimonio e Investimentos</span><button onclick="applyInvToPlan()" style="margin-left:auto;background:rgba(62,207,142,0.1);border:1px solid var(--green);color:#1E8449;padding:4px 12px;border-radius:50px;font-family:'Outfit',sans-serif;font-size:10px;font-weight:700;cursor:pointer">Importar da aba Invest</button></div>
+      <div style="padding:8px 16px 0;font-size:10.5px;color:var(--muted);line-height:1.6">Toque no botao acima para preencher com as posicoes salvas na aba Invest (RF, RV, Previdencia, Internacional, Caixa). Todos os campos continuam editaveis.</div>
       <div class="ffields">
         <div class="field"><label>Caixa / Conta</label><input id="f-caixa" type="number" placeholder="0,00"></div>
         <div class="field"><label>Reserva Emergencia</label><input id="f-reserva" type="number" placeholder="0,00"></div>
@@ -1009,7 +1009,7 @@ function saveData(){
   var m=document.getElementById('sel-month').value,y=document.getElementById('sel-year').value,p=y+'-'+m;
   var d={};
   if(CT==='pf'){
-    ['nome','cpf','perfil','dep','salario','renda2','renda3','conjuge','moradia','alim','transp','saude','educ','lazer','seguros','outros','caixa','reserva','rf','rv','multi','inter','prev','imovel','outros-inv','sv-cap','sv-pre','prev-ap','nome-a','nome-b','pct-a'].forEach(function(id){var e=document.getElementById('f-'+id);if(e)d['f-'+id]=e.value;});
+    ['nome','perfil','dep','salario','renda2','renda3','conjuge','moradia','alim','transp','saude','educ','lazer','seguros','outros','caixa','reserva','rf','rv','multi','inter','prev','imovel','outros-inv','sv-cap','sv-pre','prev-ap','nome-a','nome-b','pct-a'].forEach(function(id){var e=document.getElementById('f-'+id);if(e)d['f-'+id]=e.value;});
     GIDS.forEach(function(id){var e=document.getElementById(id);if(e)d[id]=e.value;});
     d.cgs=JSON.stringify(getCGs());
   }else{
@@ -1194,7 +1194,7 @@ function rPF(rec){
   var c=calcR(rec),renda=c.renda,desp=c.desp,saldo=c.saldo,patrim=c.patrim,score=c.score;
   var pp=renda>0?saldo/renda*100:0;
   document.getElementById('dn-nome').textContent=d['f-nome']||'Cliente';
-  document.getElementById('dn-sub').textContent=(PROF==='casal'?'Plano do Casal - despesas, patrimonio e objetivos compartilhados':('CPF '+(d['f-cpf']||'-')+' - Perfil: '+(d['f-perfil']||'-')))+' - '+pL(rec.period)+(DASHLBL?' - '+DASHLBL:'');
+  document.getElementById('dn-sub').textContent=(PROF==='casal'?'Plano do Casal - despesas, patrimonio e objetivos compartilhados':('Perfil: '+(d['f-perfil']||'-')))+' - '+pL(rec.period)+(DASHLBL?' - '+DASHLBL:'');
   document.getElementById('dn-renda').textContent=fmt(renda);
   document.getElementById('dn-desp').textContent=fmt(desp);
   var se=document.getElementById('dn-saldo');se.textContent=fmt(saldo);se.className='hkpi-v '+(saldo>=0?'pos':'neg');
@@ -1493,13 +1493,30 @@ function extrTx(rows,cardName){
   return tx;
 }
 function detDups(txList){
+  txList.forEach(function(t){t.isDup=false;t.dupOf=null;});
   for(var i=0;i<txList.length;i++)for(var j=i+1;j<txList.length;j++){
     var a=txList[i],b=txList[j];
-    if(Math.abs(a.valor-b.valor)<0.01&&a.dateObj&&b.dateObj){
-      var diff=Math.abs(a.dateObj-b.dateObj)/(1000*60*60*24);
-      if(diff<=3&&a.estabelecimento.substring(0,5).toLowerCase()===b.estabelecimento.substring(0,5).toLowerCase()){a.isDup=true;b.isDup=true;}
+    if(Math.abs(a.valor-b.valor)>=0.01||!a.dateObj||!b.dateObj)continue;
+    var pa=a.parcel?a.parcel.current:null,pb=b.parcel?b.parcel.current:null;
+    if(pa!==pb)continue;
+    var diff=Math.abs(a.dateObj-b.dateObj)/(1000*60*60*24);
+    if(diff<=3&&a.estabelecimento.substring(0,6).toLowerCase()===b.estabelecimento.substring(0,6).toLowerCase()){
+      a.isDup=true;b.isDup=true;if(!b.dupOf)b.dupOf=a.id;
     }
   }
+}
+function delDups(){
+  var rm=fatAllTx.filter(function(t){return t.dupOf;});
+  if(!rm.length){toast('Nenhuma duplicata para excluir.');return;}
+  if(!confirm('Excluir '+rm.length+' transacao(oes) duplicada(s), mantendo 1 de cada?'))return;
+  var keys={};
+  rm.forEach(function(t){
+    var key=t._k;if(!key||!FATLOADED[key])return;
+    FATLOADED[key].forEach(function(cd){cd.transactions=(cd.transactions||[]).filter(function(x){return x.id!==t.id;});});
+    keys[key]=1;
+  });
+  Object.keys(keys).forEach(function(k){FATLOADED[k]=FATLOADED[k].filter(function(cd){return (cd.transactions||[]).length>0;});persistKey(k);});
+  loadFat();toast(rm.length+' duplicata(s) excluida(s).');
 }
 var CC2=['#4FA8D5','#E74C3C','#2ECC71','#F39C12','#9B59B6'];
 function handleDrop(e){e.preventDefault();var f=e.dataTransfer.files;if(f.length)procFile(f[0]);}
@@ -1507,6 +1524,7 @@ function handleFileUpload(e){var f=e.target.files[0];if(f)procFile(f);e.target.v
 function procFile(file){
   var cn=file.name.replace(/\.[^.]+$/,'').replace(/_/g,' ');
   if(/\.pdf$/i.test(file.name)){procPdfFatura(file,cn);return;}
+  if(/\.(xlsx|xls)$/i.test(file.name)){procXlsFatura(file,cn);return;}
   document.getElementById('fat-empty').style.display='none';
   document.getElementById('fat-results').style.display='none';
   document.getElementById('fat-progress').style.display='block';
@@ -1532,6 +1550,40 @@ function procFile(file){
   };
   reader.readAsText(file,'UTF-8');
 }
+
+function procXlsFatura(file,cn){
+  document.getElementById('fat-empty').style.display='none';
+  document.getElementById('fat-results').style.display='none';
+  document.getElementById('fat-progress').style.display='block';
+  document.getElementById('prog-bar').style.width='15%';
+  document.getElementById('prog-title').textContent='Lendo Excel...';
+  document.getElementById('prog-sub').textContent=file.name;
+  ensureXlsx().then(function(){
+    var r=new FileReader();
+    r.onload=function(e){
+      try{
+        var wb=window.XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+        var text='';
+        wb.SheetNames.forEach(function(sn){text+=window.XLSX.utils.sheet_to_csv(wb.Sheets[sn],{FS:';'})+'\n';});
+        document.getElementById('prog-bar').style.width='60%';
+        var rows=parseCSV(text);
+        var txList=extrTx(rows,cn);
+        document.getElementById('prog-bar').style.width='90%';
+        document.getElementById('prog-count').textContent=txList.length+' transacoes encontradas';
+        setTimeout(function(){finishImp(txList,cn);},300);
+      }catch(err){
+        document.getElementById('fat-progress').style.display='none';
+        document.getElementById('fat-empty').style.display='block';
+        toast('Nao consegui ler esta planilha. Exporte como CSV e tente de novo.');
+      }
+    };
+    r.readAsArrayBuffer(file);
+  }).catch(function(){
+    document.getElementById('fat-progress').style.display='none';
+    document.getElementById('fat-empty').style.display='block';
+    toast('Leitura de Excel requer internet (funciona no link publicado).');
+  });
+}
 function finishImp(txList,cn){
   if(!txList.length){document.getElementById('fat-progress').style.display='none';document.getElementById('fat-empty').style.display='block';toast('Nenhuma transacao encontrada. Verifique o arquivo.');return;}
   var dest=(document.getElementById('fat-card-dest')||{}).value||cn;
@@ -1555,7 +1607,7 @@ function rFatChips(){var el=document.getElementById('fat-chips');var h='<div cla
 function setAC(id){activeCard=id;rFatResults();}
 function rFatStats(){var tx=getActiveTx(),tot=tx.reduce(function(a,t){return a+t.valor;},0),dups=tx.filter(function(t){return t.isDup;}).length,pars=tx.filter(function(t){return t.parcel;}).length;document.getElementById('fat-stats').innerHTML='<div class="card"><div class="chd"><div class="cico" style="background:rgba(242,96,92,0.1)">$</div></div><div class="cv" style="color:var(--red)">'+fmt(tot)+'</div><div class="cl">Total da Fatura</div></div><div class="card"><div class="chd"><div class="cico" style="background:rgba(79,168,213,0.1)">#</div></div><div class="cv" style="color:var(--blue)">'+tx.length+'</div><div class="cl">Transacoes</div></div><div class="card"><div class="chd"><div class="cico" style="background:rgba(245,200,66,0.1)">P</div></div><div class="cv" style="color:var(--yellow)">'+pars+'</div><div class="cl">Parcelas</div></div><div class="card"><div class="chd"><div class="cico" style="background:rgba(242,96,92,0.1)">!</div></div><div class="cv" style="color:'+(dups>0?'var(--red)':'var(--green)')+'">'+dups+'</div><div class="cl">Possiveis duplicatas</div></div>';}
 function rFatCats(){var tx=getActiveTx(),tot=tx.reduce(function(a,t){return a+t.valor;},0),cats={},catC={};tx.forEach(function(t){cats[t.cat]=(cats[t.cat]||0)+t.valor;catC[t.cat]=t.catColor;});var sorted=Object.keys(cats).sort(function(a,b){return cats[b]-cats[a];});document.getElementById('fat-cat-list').innerHTML=sorted.map(function(cat){var v=cats[cat],p=tot>0?v/tot*100:0,col=catC[cat]||'#95A5A6';return'<div class="bi"><div class="bd" style="background:'+col+'"></div><span class="bname">'+cat+'</span><div class="bbw"><div class="bbf" style="width:'+p+'%;background:'+col+'"></div></div><span class="bpct">'+fP(p)+'</span><span class="bval">'+fmt(v)+'</span></div>';}).join('');drawDonut('fat-donut',sorted.map(function(cat){return{n:cat,v:cats[cat],c:catC[cat]||'#95A5A6'};}), 'fat-legend');}
-function rFatAlerts(){var tx=getActiveTx(),dups=tx.filter(function(t){return t.isDup;}),h='';if(dups.length)h+='<div style="padding:11px 14px;background:rgba(242,96,92,0.06);border-left:4px solid var(--red);border-radius:7px;font-size:12px;color:#555;line-height:1.7;margin-bottom:9px">'+dups.length+' possiveis duplicatas encontradas. Verifique antes de importar.</div>';var pars=tx.filter(function(t){return t.parcel&&t.parcel.current===1;});if(pars.length)h+='<div style="padding:11px 14px;background:rgba(245,200,66,0.06);border-left:4px solid var(--yellow);border-radius:7px;font-size:12px;color:#555;line-height:1.7">'+pars.length+' compras parceladas identificadas. O valor exibido e a parcela mensal, nao o total.</div>';document.getElementById('fat-alerts').innerHTML=h;}
+function rFatAlerts(){var tx=getActiveTx(),dups=tx.filter(function(t){return t.isDup;}),h='';if(dups.length)h+='<div style="padding:11px 14px;background:rgba(242,96,92,0.06);border-left:4px solid var(--red);border-radius:7px;font-size:12px;color:#555;line-height:1.7;margin-bottom:9px">'+dups.length+' possiveis duplicatas encontradas. Revise ou <b onclick="delDups()" style="color:var(--red);cursor:pointer;text-decoration:underline">exclua as duplicadas em 1 toque</b>. Dica: parcelas diferentes do mesmo estabelecimento nao sao mais marcadas.</div>';var pars=tx.filter(function(t){return t.parcel&&t.parcel.current===1;});if(pars.length)h+='<div style="padding:11px 14px;background:rgba(245,200,66,0.06);border-left:4px solid var(--yellow);border-radius:7px;font-size:12px;color:#555;line-height:1.7">'+pars.length+' compras parceladas identificadas. O valor exibido e a parcela mensal, nao o total.</div>';document.getElementById('fat-alerts').innerHTML=h;}
 function popFatFilters(){var cats={},cards={};fatAllTx.forEach(function(t){cats[t.cat]=1;cards[t.cartao]=1;});document.getElementById('fat-filter-cat').innerHTML='<option value="">Todas as categorias</option>'+Object.keys(cats).map(function(c){return'<option>'+c+'</option>';}).join('');document.getElementById('fat-filter-card').innerHTML='<option value="">Todos os cartoes</option>'+Object.keys(cards).map(function(c){return'<option>'+c+'</option>';}).join('');}
 function renderFatTable(){
   var tx=getActiveTx(),cf=document.getElementById('fat-filter-cat').value,kf=document.getElementById('fat-filter-card').value,sf=(document.getElementById('fat-search').value||'').toLowerCase();
@@ -1635,7 +1687,7 @@ function exportExcel(){
   var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Painel_'+CT.toUpperCase()+'_'+new Date().toISOString().slice(0,10)+'.xls';a.click();URL.revokeObjectURL(a.href);toast('Excel exportado!');
 }
 
-var IDS_PF=['nome','cpf','perfil','dep','salario','renda2','renda3','conjuge','moradia','alim','transp','saude','educ','lazer','seguros','outros','caixa','reserva','rf','rv','multi','inter','prev','imovel','outros-inv','sv-cap','sv-pre','prev-ap','nome-a','nome-b','pct-a'];
+var IDS_PF=['nome','perfil','dep','salario','renda2','renda3','conjuge','moradia','alim','transp','saude','educ','lazer','seguros','outros','caixa','reserva','rf','rv','multi','inter','prev','imovel','outros-inv','sv-cap','sv-pre','prev-ap','nome-a','nome-b','pct-a'];
 var GIDS=['g-apos-meta','g-apos-at','g-apos-date'];
 var IDS_PJ=['nome','cnpj','setor','regime','fat','ded','rf','out','folha','forn','trib','mkt','infra','adm','caixa','cr','divida','pl','cli','func','meta-fat','meta-res','res-at','do','gar','pat','vida'];
 function loadForm(){
@@ -1664,8 +1716,6 @@ function profRendaAt(p,period){
 function applyCasalUI(){
   var isC=(PROF==='casal');
   var rs=document.getElementById('rec-sec');if(rs)rs.style.display=isC?'none':'block';
-  var cpf=document.getElementById('f-cpf');
-  if(cpf&&cpf.closest){var w=cpf.closest('.field');if(w)w.style.display=isC?'none':'';}
   if(isC){
     var nEl=document.getElementById('f-nome');
     if(nEl){
@@ -2220,8 +2270,8 @@ function procPdfFatura(file,cn){
         if(/SALDO|FATURA|PAGAMENTO|LIMITE|VENCIMENTO|ENCARGOS|JUROSDE|IOF|ANUIDADE|TOTALDEST|COMPRASPARCELAD|DEMAISFATURA|PROXIMAFATURA/i.test(flat))return;
         var dm=line.match(/(\d{2}\/\d{2}(?:\/\d{2,4})?)|(\d{1,2}\s+(?:JAN|FEV|MAR|ABR|MAI|JUN|JUL|AGO|SET|OUT|NOV|DEZ)[A-Z]*)/i);
         if(!dm)return;
-        var vals=[],vre=/(^|[\s(])(-?)(?:R\$)?(\d{1,3}(?:\.\d{3})*,\d{2})(?=$|[\s)])/g,vm;
-        while((vm=vre.exec(line))){vals.push((vm[2]||'')+vm[3]);}
+        var vals=[],vre=/(^|[\s(])(-?)(?:R\$)?(\d{1,3}(?:[.\s]\d{3})*,\d{2})(?=$|[\s)])/g,vm;
+        while((vm=vre.exec(line))){vals.push(((vm[2]||'')+vm[3]).replace(/\s+/g,''));}
         if(!vals.length)return;
         var rawV=vals[vals.length-1];
         if(/-/.test(rawV))return;
